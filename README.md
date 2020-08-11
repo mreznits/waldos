@@ -13,6 +13,11 @@
    - Mask.h = Class for creating a mask of fixed dimensions
    - Waldos.h & Waldos.cpp = Core algorithm functions for finding Waldos
    - Images - Directory for input and output images
+   - sampleDebugOutput.jpg - Image of sample debug output of the program
+   - waldos-Debug.exe - Debug executable of the program
+   - waldos-Release.exe - Release executable of the program
+   - LICENSE - GNU General Public License
+   - waldos.sln & waldos.vcproj - Visual Studio 2008 project files
    
    Abstract of algorithm:
    - Idea #1: Waldo may partially occluded, he might wear different hats, but his face and shirt 

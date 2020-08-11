@@ -102,7 +102,7 @@ class Input
 	}
 
 public:
-	Input(std::string _filePath, bool _bShowRedWhite)
+	Input(std::string _filePath, bool _bDebug)
 	{
 		m_imgBGR = cvLoadImage(_filePath.c_str());
 		m_size = cvSize(m_imgBGR->width, m_imgBGR->height);
@@ -113,10 +113,8 @@ public:
 		//Idea: Waldo's shirt is always red and white -> apply colour-based filters
 		filterColours();
 
-		if (_bShowRedWhite)
+		if (_bDebug)
 		{
-			cvNamedWindow("red");
-			cvNamedWindow("white");
 			this->showRed("red");
 			this->showWhite("white");
 		}
@@ -127,9 +125,6 @@ public:
 		cvReleaseImage( &m_imgBGR );
 		cvReleaseImage( &m_imgRed );
 		cvReleaseImage( &m_imgWhite );
-
-		cvDestroyWindow("red");
-		cvDestroyWindow("white");
 	}
 
 	IplImage * getImgBgr()

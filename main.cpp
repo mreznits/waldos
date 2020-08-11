@@ -39,9 +39,6 @@ string INPUT_FILE = FOLDER + "input.txt";
 string OUTPUT_FILE = FOLDER + "output.txt";
 #define PRINT_TO_OUT_FILE true
 
-#define _DEBUG_FILTER false
-#define _DEBUG_INPUT true
-
 int main(int argc, char* argv[])
 {
 	Input * input;
@@ -49,28 +46,33 @@ int main(int argc, char* argv[])
 	string line, output;
 	char entry[20];
 	CvPoint center;
+	bool bDebug = false;
 
-	if (_DEBUG_INPUT)
-		cvNamedWindow("src", CV_WINDOW_AUTOSIZE);
+#ifdef _DEBUG
+	bDebug = true;
+	cvNamedWindow("src", CV_WINDOW_AUTOSIZE);
+	cvNamedWindow("red", CV_WINDOW_AUTOSIZE);
+	cvNamedWindow("white", CV_WINDOW_AUTOSIZE);
+	cvNamedWindow("result of best mask", CV_WINDOW_AUTOSIZE);
+#endif
 
 	//read provided text file to get list of images to process
 	ifstream infile (INPUT_FILE.c_str(), ios_base::in);
 	while (getline(infile, line, ','))
 	{
 		//create images
-		input = new Input(FOLDER + line + ".jpg", _DEBUG_FILTER);
+		input = new Input(FOLDER + line + ".jpg", bDebug);
 
-		if (_DEBUG_INPUT)
-		{
-			printf("Loaded ");
-			printf((FOLDER + line + ".jpg\n").c_str());
+		printf("Loaded ");
+		printf((FOLDER + line + ".jpg\n").c_str());
 
-			input->showBgr("src");
-		}
+#ifdef _DEBUG
+		input->showBgr("src");
+#endif
 
 		time_t before = time(0); 
 
-		center = findWaldo(input);
+		center = findWaldo(input, bDebug);
 
 		time_t after = time(0); 
 		double duration = difftime(after, before);
@@ -82,13 +84,12 @@ int main(int argc, char* argv[])
 		cvCircle( imgTemp, center, 12, CV_RGB(0, 0, 255), 4);
 		cvCircle( imgTemp, center, 24, CV_RGB(0, 0, 255), 4);
 
-		if (_DEBUG_INPUT)
-		{
-			printf("Done: (%d, %d) (%.0f sec)\n", center.x, center.y, duration); 
+		printf("Done: (%d, %d) (%.0f sec)\n", center.x, center.y, duration); 
 
-			cvShowImage("src", imgTemp);
-			cvWaitKey(0);
-		}
+#ifdef _DEBUG
+		cvShowImage("src", imgTemp);
+		cvWaitKey(0);
+#endif
 
 		//save the image
 		cvSaveImage( (FOLDER + line + "_final.jpg").c_str(), imgTemp );
@@ -114,8 +115,12 @@ int main(int argc, char* argv[])
 
 	delete input;
 
-	if (_DEBUG_INPUT)
+#ifdef _DEBUG
 		cvDestroyWindow("src");
+		cvDestroyWindow("red");
+		cvDestroyWindow("white");
+		cvDestroyWindow("result of best mask");
+#endif
 
 	return 0;
 }

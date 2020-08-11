@@ -37,13 +37,13 @@
 
 using namespace std;
 
-CvPoint findWaldo(Input * _input)
+CvPoint findWaldo(Input * _input, bool _bDebug)
 {
 	IplImage * imgMatch = cvCreateImage( _input->getSize(), IPL_DEPTH_8U, 1 );
 
 	// Idea: Waldo's shirt is always striped -> search for it using a mask of stripes
 	// Idea: In the images, Waldo is always vertical -> shirt stripes are always horizontal
-	findMaskMatchLoc( _input, *imgMatch );
+	findMaskMatchLoc( _input, _bDebug, *imgMatch );
 	CvPoint center = getCenterOfLargestBlob( imgMatch );
 
 	cvReleaseImage( &imgMatch );
@@ -51,7 +51,7 @@ CvPoint findWaldo(Input * _input)
 	return center;
 }
 
-void findMaskMatchLoc(Input * _input, IplImage & _imgDst)
+void findMaskMatchLoc(Input * _input, bool _bDebug, IplImage & _imgDst)
 {
 	int inputW = _input->getSize().width;
 	int inputH = _input->getSize().height;
@@ -143,13 +143,11 @@ void findMaskMatchLoc(Input * _input, IplImage & _imgDst)
 #endif
 #endif
 
-#ifdef _DEBUG_BEST_MASK
-	printf("Best mask = %d x %d\n", bestMaskH, bestMaskH);
-	cvNamedWindow("best mask", 0);
-	showBinaryImage("best mask", &_imgDst);
-	cvWaitKey(0);
-	cvDestroyWindow("best mask");
-#endif
+	if (_bDebug)
+	{
+		printf("Best mask = %d x %d\n", bestMaskH, bestMaskH);
+		showBinaryImage("result of best mask", &_imgDst);
+	}
 
 	cvReleaseImage( &imgTemp );
 }

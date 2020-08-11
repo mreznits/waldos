@@ -39,7 +39,6 @@
 #include "highgui.h" 
 #include <cxcore.h>
 
-//#define _DEBUG_BEST_MASK
 //#define _DEBUG_ALL_MASKS
 //#define _DEBUG_X 239 //good for level1.img
 //#define _DEBUG_Y 246 //good for level1.img
@@ -61,9 +60,10 @@
 // Idea #5: Since the mask is invariant along x, can make it the entire width of the image
 //
 // [input] _imgSrc	= input object
+// [input] _bDebug	= debug flag
 // [output, return] = center point 
 //-----------------------------------------------------------------------------------------------------
-CvPoint findWaldo(Input * _input);
+CvPoint findWaldo(Input * _input, bool bDebug);
 
 //-----------------------------------------------------------------------------------------------------
 // Try sliding different-sized masks across the source image
@@ -73,9 +73,10 @@ CvPoint findWaldo(Input * _input);
 // Choose the best one. 
 //
 // [input] _input			= input object
+// [input] _bDebug			= debug flag
 // [output, ref] _imgDst	= binary match location image of the best mask
 //-----------------------------------------------------------------------------------------------------
-void findMaskMatchLoc(Input * _input, IplImage & _imgDst);
+void findMaskMatchLoc(Input * _input, bool _bDebug, IplImage & _imgDst);
 
 //-----------------------------------------------------------------------------------------------------
 // Get the optimal parameters for mask dimensions based on the dimensions of the input image
