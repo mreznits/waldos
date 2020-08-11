@@ -1,12 +1,14 @@
 /*************************************************************************
-   "Where's Senor Waldos?"
-   Miovision Programming Contest
+	"Where's Senor Waldos?"
+	Miovision Programming Contest
  
-   Copyright Maxim Reznitskii
-   Version 1: Dec. 21, 2007
-   Version 2: Aug. 10, 2020
+	Copyright Maxim Reznitskii
+	Version 1: Dec. 21, 2007
+	Version 2: Aug. 10, 2020
 
-   Created with OpenCV 1.0 and Microsoft Visual Studio 2008
+	Created with OpenCV 1.0 and Microsoft Visual Studio 2008
+
+	Mask.h = Class for creating a mask of fixed dimensions
 *************************************************************************/
 /*************************************************************************
     This file is part of Waldos.
