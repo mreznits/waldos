@@ -1,14 +1,14 @@
 /*************************************************************************
-	"Where's Senor Waldos?"
-	Miovision Programming Contest
+    "Where's Senor Waldos?"
+    Miovision Programming Contest
  
-	Copyright Maxim Reznitskii
-	Version 1: Dec. 21, 2007
-	Version 2: Aug. 10, 2020
+    Copyright Maxim Reznitskii
+    Version 1: Dec. 21, 2007
+    Version 2: Aug. 10, 2020
 
-	Created with OpenCV 1.0 and Microsoft Visual Studio 2008
+    Created with OpenCV 1.0 and Microsoft Visual Studio 2008
 
-	Waldos.h - Core algorithm functions for finding Waldos
+    Waldos.h - Core algorithm functions for finding Waldos
 *************************************************************************/
 /*************************************************************************
     This file is part of Waldos.
@@ -53,7 +53,7 @@
 //-----------------------------------------------------------------------------------------------------
 // Find Senor Waldos!
 // Idea #1: Waldo may partially occluded, he might wear different hats, but his face and shirt 
-//		are always the same and always visible -> search the image for his shirt
+//      are always the same and always visible -> search the image for his shirt
 // Idea #2: Waldo's shirt is always red and white -> apply colour-based filters
 // Idea #3: Waldo's shirt is always striped -> search for it using a mask of stripes
 // Idea #4: In the images, Waldo is always vertical -> shirt stripes are always horizontal
@@ -92,7 +92,7 @@ void getOptimalMaskParams(int _iWidth, int _iHeight, int & _iMinMaskSize, int & 
 
 //-----------------------------------------------------------------------------------------------------
 // Slide the mask across the source image. Result is a floating point image, showing a match quality 
-// value at each pixel index.  
+//      value at each pixel index.  
 // Threshold this image to retain only the good matches. 
 //
 // [input] _input               = input object
@@ -105,15 +105,15 @@ void applyMaskToFullImg(Input * _input, Mask * _mask, IplImage & _imgDst, double
 
 //-----------------------------------------------------------------------------------------------------
 // At each y-location: 
-//		- Apply mask to image of red pixels
-//		- Apply inverse mask to image of white pixels
-//		- Add the two results together (1)
-//		- Apply inverse mask to image of red pixels
-//		- Apply mask to image of white pixels
-//		- Add the two results together (2)
-//		- Evaluate the quality of the match (consider both (1) and (2) and keep the best of the two)
+// - Apply mask to image of red pixels
+// - Apply inverse mask to image of white pixels
+// - Add the two results together (1)
+// - Apply inverse mask to image of red pixels
+// - Apply mask to image of white pixels
+// - Add the two results together (2)
+// - Evaluate the quality of the match (consider both (1) and (2) and keep the best of the two)
 // [Note: This is the place where an AI algorithm could be used but, in our case, the problem can be  
-// solved with a simpler solution.]
+//      solved with a simpler solution.]
 //
 // [input] _input               = input object
 // [input] _mask                = mask object
