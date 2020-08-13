@@ -152,23 +152,23 @@ void findMaskMatchLoc(Input * _input, bool _bDebug, IplImage & _imgDst)
 	cvReleaseImage( &imgTemp );
 }
 
-void getOptimalMaskParams(int width, int height, int & minMaskSize, int & maxMaskSize, int & maskStepSize)
+void getOptimalMaskParams(int _width, int _height, int & _minMaskSize, int & _maxMaskSize, int & _maskStepSize)
 {
 	int numMasks = 6;
 
-	minMaskSize = (int)floor((double)min(width, height) / 48.0);
-	if (minMaskSize % 2 == 0) minMaskSize -= 1; //minMaskSize has to be an odd number
-	minMaskSize = max(9, minMaskSize); // smallest acceptable mask size is 9
+	_minMaskSize = (int)floor((double)min(_width, _height) / 48.0);
+	if (_minMaskSize % 2 == 0) _minMaskSize -= 1; //minMaskSize has to be an odd number
+	_minMaskSize = max(9, _minMaskSize); // smallest acceptable mask size is 9
 
 	// initial estimate of max mask size
-	maxMaskSize = (int)floor((double)min(width, height) / 12.0); 
+	_maxMaskSize = (int)floor((double)min(_width, _height) / 12.0); 
 
-	maskStepSize = (int)floor((double)(maxMaskSize - minMaskSize) / (double)numMasks);
-	if (maskStepSize % 2 == 1) maskStepSize -= 1; //maskStepSize has to be an even number
-	maskStepSize = max(4, maskStepSize); //smallest acceptable step size is 4
+	_maskStepSize = (int)floor((double)(_maxMaskSize - _minMaskSize) / (double)numMasks);
+	if (_maskStepSize % 2 == 1) _maskStepSize -= 1; //maskStepSize has to be an even number
+	_maskStepSize = max(4, _maskStepSize); //smallest acceptable step size is 4
 
 	// adjusted estimated of mask max size
-	maxMaskSize = minMaskSize + numMasks*maskStepSize;
+	_maxMaskSize = _minMaskSize + numMasks*_maskStepSize;
 }
 
 void applyMaskToFullImg(Input * _input, Mask * _mask, IplImage & _imgDst, double & _maxRatio)
