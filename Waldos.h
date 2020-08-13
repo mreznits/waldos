@@ -81,14 +81,14 @@ void findMaskMatchLoc(Input * _input, bool _bDebug, IplImage & _imgDst);
 //-----------------------------------------------------------------------------------------------------
 // Get the optimal parameters for mask dimensions based on the dimensions of the input image.
 //
-// [input] _width				= width of the input image
-// [input] _height				= height of the input image
-// [output, ref] _minMaskSize	= minimum size of the mask
-// [output, ref] _maxMaskSize	= maximum size of the mask
-// [output, ref] _maskStepSize	= mask step size
+// [input] _iWidth				= width of the input image
+// [input] _iHeight				= height of the input image
+// [output, ref] _iMinMaskSize	= minimum size of the mask
+// [output, ref] _iMaxMaskSize	= maximum size of the mask
+// [output, ref] _iMaskStepSize	= mask step size
 //
 //-----------------------------------------------------------------------------------------------------
-void getOptimalMaskParams(int _width, int _height, int & _minMaskSize, int & _maxMaskSize, int & _maskStepSize);
+void getOptimalMaskParams(int _iWidth, int _iHeight, int & _iMinMaskSize, int & _iMaxMaskSize, int & _iMaskStepSize);
 
 //-----------------------------------------------------------------------------------------------------
 // Slide the mask across the source image. Result is a floating point image, showing a match quality 
@@ -99,9 +99,9 @@ void getOptimalMaskParams(int _width, int _height, int & _minMaskSize, int & _ma
 // [input] _mask				= mask object
 // [output, ref] _imgDst		= image (black / white) showing locations where there is a good match  
 //									between the source and the mask
-// [output, ref] _maxRatio		= value corresponding to the best match location in the image 
+// [output, ref] _dMaxRatio		= value corresponding to the best match location in the image 
 //-----------------------------------------------------------------------------------------------------
-void applyMaskToFullImg(Input * _input, Mask * _mask, IplImage & _imgDst, double & _maxRatio);
+void applyMaskToFullImg(Input * _input, Mask * _mask, IplImage & _imgDst, double & _dMaxRatio);
 
 //-----------------------------------------------------------------------------------------------------
 // At each y-location: 
@@ -117,22 +117,22 @@ void applyMaskToFullImg(Input * _input, Mask * _mask, IplImage & _imgDst, double
 //
 // [input] _input				= input object
 // [input] _mask				= mask object
-// [input] _y					= y-location in the source image that we are working with 
+// [input] _iY					= y-location in the source image that we are working with 
 // [output, ref] _imgDst		= image (floating point) showing the quality of the match between the   
 //									source and the mask
 //-----------------------------------------------------------------------------------------------------
-void applyMaskAtY(Input * _input, Mask * _mask, int _y, IplImage & _imgDst);
+void applyMaskAtY(Input * _input, Mask * _mask, int _iY, IplImage & _imgDst);
 
 //-----------------------------------------------------------------------------------------------------
 // Calculate how well the mask matched the source image.
 //
 // [input] _imgAfterMask		= binary image showing result of mask applied to source
 // [input] _imgAfterMaskInv		= binary image showing result of mask inverse applied to source
-// [input] _y					= y-location in the source image that we are working with 
+// [input] _iY					= y-location in the source image that we are working with 
 // [output, ref] _imgDst		= image (floating point) showing locations where there is a good match  
 //									between the source and the mask
 //-----------------------------------------------------------------------------------------------------
-void calculateMatchQuality(IplImage * _imgAfterMask, IplImage * _imgAfterMaskInv, int _y, IplImage & _imgDst);
+void calculateMatchQuality(IplImage * _imgAfterMask, IplImage * _imgAfterMaskInv, int _iY, IplImage & _imgDst);
 
 //-----------------------------------------------------------------------------------------------------
 // Find the center of the biggest blog in the image.
@@ -145,9 +145,9 @@ CvPoint getCenterOfLargestBlob(IplImage * _imgSrc);
 //-----------------------------------------------------------------------------------------------------
 // Function for debugging. Convert image with values 0/1 to 0/255 and display it. 
 //
-// [input] _winName				= name of the debug window
+// [input] _sWinName			= name of the debug window
 // [input] _imgSrc				= source image
 //-----------------------------------------------------------------------------------------------------
-void showBinaryImage(std::string _winName, IplImage *_imgSrc);
+void showBinaryImage(std::string _sWinName, IplImage *_imgSrc);
 
 #endif

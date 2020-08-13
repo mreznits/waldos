@@ -152,26 +152,26 @@ void findMaskMatchLoc(Input * _input, bool _bDebug, IplImage & _imgDst)
 	cvReleaseImage( &imgTemp );
 }
 
-void getOptimalMaskParams(int _width, int _height, int & _minMaskSize, int & _maxMaskSize, int & _maskStepSize)
+void getOptimalMaskParams(int _iWidth, int _iHeight, int & _iMinMaskSize, int & _iMaxMaskSize, int & _iMaskStepSize)
 {
-	int numMasks = 6;
+	int iNumMasks = 6;
 
-	_minMaskSize = (int)floor((double)min(_width, _height) / 48.0);
-	if (_minMaskSize % 2 == 0) _minMaskSize -= 1; //minMaskSize has to be an odd number
-	_minMaskSize = max(9, _minMaskSize); // smallest acceptable mask size is 9
+	_iMinMaskSize = (int)floor((double)min(_iWidth, _iHeight) / 48.0);
+	if (_iMinMaskSize % 2 == 0) _iMinMaskSize -= 1; //minMaskSize has to be an odd number
+	_iMinMaskSize = max(9, _iMinMaskSize); // smallest acceptable mask size is 9
 
 	// initial estimate of max mask size
-	_maxMaskSize = (int)floor((double)min(_width, _height) / 12.0); 
+	_iMaxMaskSize = (int)floor((double)min(_iWidth, _iHeight) / 12.0); 
 
-	_maskStepSize = (int)floor((double)(_maxMaskSize - _minMaskSize) / (double)numMasks);
-	if (_maskStepSize % 2 == 1) _maskStepSize -= 1; //maskStepSize has to be an even number
-	_maskStepSize = max(4, _maskStepSize); //smallest acceptable step size is 4
+	_iMaskStepSize = (int)floor((double)(_iMaxMaskSize - _iMinMaskSize) / (double)iNumMasks);
+	if (_iMaskStepSize % 2 == 1) _iMaskStepSize -= 1; //maskStepSize has to be an even number
+	_iMaskStepSize = max(4, _iMaskStepSize); //smallest acceptable step size is 4
 
 	// adjusted estimated of mask max size
-	_maxMaskSize = _minMaskSize + numMasks*_maskStepSize;
+	_iMaxMaskSize = _iMinMaskSize + iNumMasks*_iMaskStepSize;
 }
 
-void applyMaskToFullImg(Input * _input, Mask * _mask, IplImage & _imgDst, double & _maxRatio)
+void applyMaskToFullImg(Input * _input, Mask * _mask, IplImage & _imgDst, double & _dMaxRatio)
 {
 	int wMask = _mask->getW();
 	int hMask = _mask->getH();
@@ -200,10 +200,10 @@ void applyMaskToFullImg(Input * _input, Mask * _mask, IplImage & _imgDst, double
 	}
 
 	//get the location where the match between the source and the mask was the greatest
-	cvMinMaxLoc(imgTemp, NULL, &_maxRatio);
+	cvMinMaxLoc(imgTemp, NULL, &_dMaxRatio);
 
 	//scale the image of match results based on the max value so that everything is between 0 and 1
-	cvScale(imgTemp, imgTemp, 1/_maxRatio);
+	cvScale(imgTemp, imgTemp, 1/_dMaxRatio);
 
 	//threshold to keep only the locations corresponding to good matches
 	cvZero(&_imgDst);
@@ -212,7 +212,7 @@ void applyMaskToFullImg(Input * _input, Mask * _mask, IplImage & _imgDst, double
 	cvReleaseImage( &imgTemp );
 }
 
-void applyMaskAtY(Input * _input, Mask * _mask, int _y, IplImage & _imgDst)
+void applyMaskAtY(Input * _input, Mask * _mask, int _iY, IplImage & _imgDst)
 {
 	int wMask = _mask->getW();
 	int hMask = _mask->getH();
@@ -227,7 +227,7 @@ void applyMaskAtY(Input * _input, Mask * _mask, int _y, IplImage & _imgDst)
 
 #ifdef _DEBUG_ALL_MASKS
 #ifdef _DEBUG_Y
-	if (_y == _DEBUG_Y)
+	if (_iY == _DEBUG_Y)
 	{
 		showBinaryImage("mask_", _mask->getImgInv());
 	}
@@ -249,7 +249,7 @@ void applyMaskAtY(Input * _input, Mask * _mask, int _y, IplImage & _imgDst)
 
 #ifdef _DEBUG_ALL_MASKS
 #ifdef _DEBUG_Y
-	if (_y == _DEBUG_Y)
+	if (_iY == _DEBUG_Y)
 	{
 		showBinaryImage("mask small out", imgAfterMask);
 	}
@@ -258,7 +258,7 @@ void applyMaskAtY(Input * _input, Mask * _mask, int _y, IplImage & _imgDst)
 
 	IplImage * imgTemp = cvCreateImage( cvSize(_imgDst.width, _imgDst.height), IPL_DEPTH_32F, 1 );
 	cvCopy(&_imgDst, imgTemp);
-	calculateMatchQuality(imgAfterMask, imgAfterMaskInv, _y, *imgTemp);
+	calculateMatchQuality(imgAfterMask, imgAfterMaskInv, _iY, *imgTemp);
 	cvCopy(imgTemp, &_imgDst);
 	cvReleaseImage(&imgTemp);
 
@@ -270,7 +270,7 @@ void applyMaskAtY(Input * _input, Mask * _mask, int _y, IplImage & _imgDst)
 	cvReleaseImage(&imgAfterMaskInv);
 }
 
-void calculateMatchQuality(IplImage * _imgAfterMask, IplImage * _imgAfterMaskInv, int _y, IplImage & _imgDst)
+void calculateMatchQuality(IplImage * _imgAfterMask, IplImage * _imgAfterMaskInv, int _iY, IplImage & _imgDst)
 {
 	int wMask = _imgAfterMask->width;
 	int hMask = _imgAfterMask->height;
@@ -320,7 +320,7 @@ void calculateMatchQuality(IplImage * _imgAfterMask, IplImage * _imgAfterMaskInv
 			double ratio2 = numNonZero2 / (double)(hMask * hMask);
 			double maxRatio = max(ratio1, ratio2);
 
-			cvSet2D(&_imgDst, _y, x, cvScalar(maxRatio));
+			cvSet2D(&_imgDst, _iY, x, cvScalar(maxRatio));
 		}
 	}
 
@@ -390,12 +390,12 @@ CvPoint getCenterOfLargestBlob(IplImage * _imgSrc)
 	return center;
 }
 
-void showBinaryImage(string _winName, IplImage *_imgSrc)
+void showBinaryImage(string _sWinName, IplImage *_imgSrc)
 {
 	IplImage * imgTemp = cvCreateImage( cvGetSize(_imgSrc), IPL_DEPTH_8U, 1 );
 	
 	cvCvtScale(_imgSrc, imgTemp, 255);
-	cvShowImage(_winName.c_str(), imgTemp);
+	cvShowImage(_sWinName.c_str(), imgTemp);
 
 	cvReleaseImage(&imgTemp);
 }
