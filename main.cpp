@@ -72,7 +72,7 @@ int main(int argc, char* argv[])
 
 		time_t before = time(0); 
 
-		center = findWaldo(input, bDebug);
+		center = findWaldos(input, bDebug);
 
 		time_t after = time(0); 
 		double duration = difftime(after, before);

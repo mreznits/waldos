@@ -45,8 +45,14 @@ class Input
 	CvSize m_size;
 
 	//-----------------------------------------------------------------------------------------------------
-	// Convert the image to HSV
-	// Threshold it to keep only red and white
+	// Converts the image to HSV
+	// Thresholds it to keep only red and white
+    //
+    // Example:
+    //
+    // "Examples/filterColours_red.jpg" shows the binary image of red pixel locations for Input("Examples/level2.jpg")
+    // "Examples/filterColours_white.jpg" shows the binary image of white pixel locations for Input("Examples/level2.jpg")
+    //
 	//-----------------------------------------------------------------------------------------------------
 	void filterColours()
 	{
@@ -110,7 +116,7 @@ public:
 		m_imgRed = cvCreateImage( this->m_size, IPL_DEPTH_8U, 1 );
 		m_imgWhite = cvCreateImage( this->m_size, IPL_DEPTH_8U, 1 );
 
-		//Idea: Waldo's shirt is always red and white -> apply colour-based filters
+		//Idea: Waldos' shirt is always red and white -> apply colour-based filters
 		filterColours();
 
 		if (_bDebug)

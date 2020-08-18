@@ -37,12 +37,12 @@
 
 using namespace std;
 
-CvPoint findWaldo(Input * _input, bool _bDebug)
+CvPoint findWaldos(Input * _input, bool _bDebug)
 {
 	IplImage * imgMatch = cvCreateImage( _input->getSize(), IPL_DEPTH_8U, 1 );
 
-	// Idea: Waldo's shirt is always striped -> search for it using a mask of stripes
-	// Idea: In the images, Waldo is always vertical -> shirt stripes are always horizontal
+	// Idea: Waldos' shirt is always striped -> search for it using a mask of stripes
+	// Idea: In the images, Waldos is always vertical -> shirt stripes are always horizontal
 	findMaskMatchLoc( _input, _bDebug, *imgMatch );
 	CvPoint center = getCenterOfLargestBlob( imgMatch );
 
@@ -154,7 +154,7 @@ void findMaskMatchLoc(Input * _input, bool _bDebug, IplImage & _imgDst)
 
 void getOptimalMaskParams(int _iWidth, int _iHeight, int & _iMinMaskSize, int & _iMaxMaskSize, int & _iMaskStepSize)
 {
-	int iNumMasks = 6;
+	int iNumMasks = 7;
 
 	_iMinMaskSize = (int)floor((double)min(_iWidth, _iHeight) / 48.0);
 	if (_iMinMaskSize % 2 == 0) _iMinMaskSize -= 1; //minMaskSize has to be an odd number
@@ -163,12 +163,12 @@ void getOptimalMaskParams(int _iWidth, int _iHeight, int & _iMinMaskSize, int & 
 	// initial estimate of max mask size
 	_iMaxMaskSize = (int)floor((double)min(_iWidth, _iHeight) / 12.0); 
 
-	_iMaskStepSize = (int)floor((double)(_iMaxMaskSize - _iMinMaskSize) / (double)iNumMasks);
+	_iMaskStepSize = (int)floor((double)(_iMaxMaskSize - _iMinMaskSize) / (double)(iNumMasks - 1));
 	if (_iMaskStepSize % 2 == 1) _iMaskStepSize -= 1; //maskStepSize has to be an even number
 	_iMaskStepSize = max(4, _iMaskStepSize); //smallest acceptable step size is 4
 
 	// adjusted estimated of mask max size
-	_iMaxMaskSize = _iMinMaskSize + iNumMasks*_iMaskStepSize;
+	_iMaxMaskSize = _iMinMaskSize + (iNumMasks-1)*_iMaskStepSize;
 }
 
 void applyMaskToFullImg(Input * _input, Mask * _mask, IplImage & _imgDst, double & _dMaxRatio)
