@@ -52,12 +52,12 @@
 
 //-----------------------------------------------------------------------------------------------------
 // Finds Senor Waldos!
-// Idea #1: Waldos may partially occluded, he might wear different hats, but his face and shirt 
+// Idea #1: Waldos may be partially occluded, he might wear different hats, but his face and shirt 
 //      are always the same and always visible -> search the image for his shirt
 // Idea #2: Waldos' shirt is always red and white -> apply colour-based filters
 // Idea #3: Waldos' shirt is always striped -> search for it using a mask of stripes
 // Idea #4: In the images, Waldos is always vertical -> shirt stripes are always horizontal
-// Idea #5: Since the mask is invariant along x, can make it the entire width of the image
+// Idea #5: Because the mask is invariant along x, can make it the entire width of the image
 //
 // Parameters:
 //
@@ -78,7 +78,7 @@
 // _input                       Input("Examples/level2.jpg")
 // return value                 CvPoint(290,175)
 //
-// "Examples/findWaldos.jpg" shows the center point above overlayed on the input image
+// "Examples/findWaldos.jpg" shows the preceding center point overlayed on the input image
 //
 //-----------------------------------------------------------------------------------------------------
 CvPoint findWaldos(Input * _input, bool _bDebug);
@@ -86,8 +86,8 @@ CvPoint findWaldos(Input * _input, bool _bDebug);
 //-----------------------------------------------------------------------------------------------------
 // Tries sliding different-sized masks across the source image.
 // For each mask, gets: 
-// - an image showing locations where the match between the mask and the source image was good
-// - an indicator of the mask quality
+// - An image showing locations where the match between the mask and the source image was good
+// - An indicator of the mask quality
 // Chooses the best one. 
 //
 // Parameters:
@@ -195,8 +195,8 @@ void applyMaskToFullImg(Input * _input, Mask * _mask, IplImage & _imgDst, double
 //      - Applies mask to image of white pixels
 //      - Adds the two results together (2)
 //      - Evaluates the quality of the match (consider both (1) and (2) and keep the best of the two)
-// [Note: This is the place where an AI algorithm could be used but, in our case, the problem can be  
-//      solved with a simpler solution.]
+// [Note: This is the place where an AI algorithm could be used but. Here, however, the problem can   
+//      be solved with a simpler solution.]
 //
 // Parameters:
 //
